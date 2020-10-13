@@ -5,7 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -13,7 +14,6 @@ import java.util.Date;
 @Setter
 @Getter
 @EqualsAndHashCode
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -33,4 +33,9 @@ public class User {
     private Timestamp changed;
 
     private Float weight;
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+    }
 }
