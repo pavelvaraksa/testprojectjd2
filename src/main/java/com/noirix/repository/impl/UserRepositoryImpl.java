@@ -3,7 +3,7 @@ package com.noirix.repository.impl;
 import com.noirix.domain.Gender;
 import com.noirix.domain.User;
 import com.noirix.repository.UserRepository;
-import org.apache.commons.lang3.StringUtils;
+import com.noirix.util.DatabasePropertiesReader;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_DRIVER_NAME;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_LOGIN;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_PASSWORD;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_URL;
+
 public class UserRepositoryImpl implements UserRepository {
 
-    public static final String POSTRGES_DRIVER_NAME = "org.postgresql.Driver";
-    public static final String DATABASE_URL = "jdbc:postgresql://localhost:";
-    public static final int DATABASE_PORT = 5432;
-    public static final String DATABASE_NAME = "/webinar_database";
-    public static final String DATABASE_LOGIN = "postgres";
-    public static final String DATABASE_PASSWORD = "root";
+    public static final DatabasePropertiesReader reader = DatabasePropertiesReader.getInstance();
 
     private static final String ID = "id";
     private static final String NAME = "name";
@@ -53,31 +53,19 @@ public class UserRepositoryImpl implements UserRepository {
         ResultSet rs;
 
         try {
-            Class.forName(POSTRGES_DRIVER_NAME);
+            Class.forName(reader.getProperty(DATABASE_DRIVER_NAME));
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver Cannot be loaded!");
             throw new RuntimeException("JDBC Driver Cannot be loaded!");
         }
 
-        String jdbcURL = StringUtils.join(DATABASE_URL, DATABASE_PORT, DATABASE_NAME);
-
         try {
-            connection = DriverManager.getConnection(jdbcURL, DATABASE_LOGIN, DATABASE_PASSWORD);
+            connection = DriverManager.getConnection(reader.getProperty(DATABASE_URL), reader.getProperty(DATABASE_LOGIN), reader.getProperty(DATABASE_PASSWORD));
             statement = connection.createStatement();
             rs = statement.executeQuery(findAllQuery);
 
             while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getLong(ID));
-                user.setName(rs.getString(NAME));
-                user.setSurname(rs.getString(SURNAME));
-                user.setBirthDate(rs.getDate(BIRTH_DATE));
-                user.setGender(Gender.valueOf(rs.getString(GENDER)));
-                user.setCreated(rs.getTimestamp(CREATED));
-                user.setChanged(rs.getTimestamp(CHANGED));
-                user.setWeight(rs.getFloat(WEIGHT));
-
-                result.add(user);
+                result.add(parseResultSet(rs));
             }
 
             return result;
@@ -85,6 +73,19 @@ public class UserRepositoryImpl implements UserRepository {
             System.err.println(e.getMessage());
             throw new RuntimeException("SQL Issues!");
         }
+    }
+
+    private User parseResultSet(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getLong(ID));
+        user.setName(rs.getString(NAME));
+        user.setSurname(rs.getString(SURNAME));
+        user.setBirthDate(rs.getDate(BIRTH_DATE));
+        user.setGender(Gender.valueOf(rs.getString(GENDER)));
+        user.setCreated(rs.getTimestamp(CREATED));
+        user.setChanged(rs.getTimestamp(CHANGED));
+        user.setWeight(rs.getFloat(WEIGHT));
+        return user;
     }
 
     @Override
