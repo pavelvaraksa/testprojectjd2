@@ -2,8 +2,11 @@ package com.noirix.controller;
 
 import com.google.gson.Gson;
 import com.noirix.controller.command.Commands;
+import com.noirix.domain.Car;
 import com.noirix.domain.User;
+import com.noirix.repository.CarRepository;
 import com.noirix.repository.UserRepository;
+import com.noirix.repository.impl.CarRepositoryImpl;
 import com.noirix.repository.impl.UserRepositoryImpl;
 import org.apache.commons.io.IOUtils;
 
@@ -19,6 +22,7 @@ import java.util.Collections;
 public class FrontController extends HttpServlet {
 
     public static final UserRepository userRepository = new UserRepositoryImpl();
+    public static final CarRepository carRepository = new CarRepositoryImpl();
 
     public FrontController() {
         super();
@@ -44,6 +48,19 @@ public class FrontController extends HttpServlet {
 //            dispatcher.forward(req, resp);
 //        }
 //    }
+//
+//    private void doRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        RequestDispatcher dispatcher = req.getRequestDispatcher("/hello");
+//        if (dispatcher != null) {
+//            System.out.println("Forward will be done!");
+//
+//            req.setAttribute("userName", carRepository.findAll().stream().map(Car::getModel).collect(Collectors.joining(",")));
+//
+//            dispatcher.forward(req, resp);
+//        }
+//    }
+
+
 
     private void processGetRequests(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
