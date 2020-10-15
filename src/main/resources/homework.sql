@@ -3,11 +3,16 @@
 */
 select distinct role_name from m_roles join m_users on m_users.id = m_roles.id;
 
+/*
+2) Подсчитать число машин у каждого пользователя.
+Вывести в формате User full name (username + пробел + user surname) | Число машин у пользователя.
+*/
 
+select distinct username,surname,count(model) from m_users join m_cars
+on m_users.id = m_cars.user_id group by username,surname;
 
 
 /*
-2) Подсчитать число машин у каждого пользователя. Вывести в формате User full name (username + пробел + user surname) | Число машин у пользователя.
 3) Подсчитать для каждого диллера число машин, старше 2018 года производства с красным кузовом.
 4) Найти пользователей не из Беларуси и России, у которых есть машина 2010-2015 года выпуска из Германии и купленную в диллере не в Германии с объемом двигателя больше 3 литра.
 5) Определить логины пользователей, имеющих больше 3 машин.
