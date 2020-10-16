@@ -31,9 +31,14 @@ and m_cars.year between 2010 and 2015
 and m_auto_dealer.country in ('GERMANY')
 and m_engine.volume > 3.0;
 
-
 /*
 5) Определить логины пользователей, имеющих больше 3 машин.
+*/
+
+select login from m_users join m_cars
+on m_users.id = m_cars.user_id group by login having count(model) > 3;
+
+/*
 6) Вывести уникальных диллеров с подсчитанной суммой стоимостей машин, связанных с ними.
 7) Подсчитать количество уникальных пользователей, владеющих хотя бы одной машиной, стоимость которой превышает среднюю стоимость всех машин.
  */
