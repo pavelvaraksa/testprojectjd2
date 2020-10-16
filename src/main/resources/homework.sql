@@ -11,10 +11,28 @@ select distinct role_name from m_roles join m_users on m_users.id = m_roles.id;
 select distinct username,surname,count(model) from m_users join m_cars
 on m_users.id = m_cars.user_id group by username,surname;
 
-
 /*
 3) Подсчитать для каждого диллера число машин, старше 2018 года производства с красным кузовом.
-4) Найти пользователей не из Беларуси и России, у которых есть машина 2010-2015 года выпуска из Германии и купленную в диллере не в Германии с объемом двигателя больше 3 литра.
+*/
+
+select name,count(model) from m_auto_dealer,m_cars,m_body
+where year < 2018 and color = 'Red' group by name;
+
+/*
+4) Найти пользователей не из Беларуси и России,
+у которых есть машина 2010-2015 года выпуска из Германии,
+купленная в диллере не в Германии,
+с объемом двигателя больше 3 литров.
+*/
+
+select distinct username,surname from m_users,m_cars,m_auto_dealer,m_engine
+where m_users.country not in('BELARUS','RUSSIA')
+and m_cars.year between 2010 and 2015
+and m_auto_dealer.country in ('GERMANY')
+and m_engine.volume > 3.0;
+
+
+/*
 5) Определить логины пользователей, имеющих больше 3 машин.
 6) Вывести уникальных диллеров с подсчитанной суммой стоимостей машин, связанных с ними.
 7) Подсчитать количество уникальных пользователей, владеющих хотя бы одной машиной, стоимость которой превышает среднюю стоимость всех машин.
