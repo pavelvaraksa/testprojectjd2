@@ -48,7 +48,7 @@ on m_users.id = m_cars.user_id group by login having count(model) > 3;
 6) Вывести уникальных диллеров с подсчитанной суммой стоимостей машин, связанных с ними.
 */
 
-select name,sum(price) from m_auto_dealer join m_cars
+select distinct name,sum(price) from m_auto_dealer join m_cars
 on m_auto_dealer.id = m_cars.dealer_id group by name;
 
 /*

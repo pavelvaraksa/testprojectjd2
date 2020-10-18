@@ -4,8 +4,6 @@ import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Objects;
-
 @Setter
 @Getter
 @EqualsAndHashCode
@@ -23,6 +21,4 @@ public class Car {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
-
-
 }

@@ -15,12 +15,21 @@
     </listener>
 
     <servlet>
-        <servlet-name>MainServlet</servlet-name>
-        <servlet-class>com.noirix.controller.FrontController</servlet-class>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>com.noirix.controller.UserFrontController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>MainServlet</servlet-name>
-        <url-pattern>/FrontController</url-pattern>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/UserFrontController</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CarServlet</servlet-name>
+        <servlet-class>com.noirix.controller.CarFrontController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CarServlet</servlet-name>
+        <url-pattern>/CarFrontController</url-pattern>
     </servlet-mapping>
 
 <!--    localhost:8080/application/FrontController-->
