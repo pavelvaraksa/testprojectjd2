@@ -28,13 +28,14 @@ group by name,address;
 с объемом двигателя больше 3 литров.
 */
 
-select username,surname from m_users,m_cars,m_auto_dealer,m_engine
+select username,surname from m_users join m_cars on m_users.id = m_cars.user_id
+join m_engine on m_cars.id = m_engine.car_id
+join m_auto_dealer on m_cars.dealer_id = m_auto_dealer.id
 where m_users.country not in('BELARUS','RUSSIA')
 and m_cars.year between 2010 and 2015
-and m_cars.country in('GERMANY')
-and m_auto_dealer.country not in('GERMANY')
-and m_engine.volume > 3.0
-group by username, surname;
+and m_cars.country = 'GERMANY'
+and m_auto_dealer.country <> 'GERMANY'
+and volume > 3.0;
 
 /*
 5) Определить логины пользователей, имеющих больше 3 машин.
