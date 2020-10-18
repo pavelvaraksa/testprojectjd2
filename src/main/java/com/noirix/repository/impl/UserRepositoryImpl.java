@@ -107,7 +107,9 @@ public class UserRepositoryImpl implements UserRepository {
         }
 
         try {
-            connection = DriverManager.getConnection(reader.getProperty(DATABASE_URL), reader.getProperty(DATABASE_LOGIN), reader.getProperty(DATABASE_PASSWORD));
+            connection = DriverManager.getConnection(reader.getProperty(DATABASE_URL),
+                    reader.getProperty(DATABASE_LOGIN),
+                    reader.getProperty(DATABASE_PASSWORD));
             statement = connection.prepareStatement(findByIdQuery);
             statement.setLong(1, key);
 
@@ -116,7 +118,7 @@ public class UserRepositoryImpl implements UserRepository {
             if (rs.next()) {
                 return parseResultSet(rs);
             } else {
-                throw new EntityNotFoundException("User with ID:" + key + "not found");
+                throw new EntityNotFoundException("User with ID:" + key + " not found");
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());

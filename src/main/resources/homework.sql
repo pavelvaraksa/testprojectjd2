@@ -18,7 +18,7 @@ on m_users.id = m_cars.user_id group by username,surname;
 */
 
 select name,address,count(model) from m_auto_dealer join m_cars on m_auto_dealer.id = m_cars.dealer_id
-where year < 2015
+join m_body on m_cars.id = m_body.car_id where m_body.color = 'Red' and year < 2018
 group by name,address;
 
 /*

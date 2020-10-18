@@ -4,7 +4,6 @@ import com.noirix.domain.Car;
 import com.noirix.exception.EntityNotFoundException;
 import com.noirix.repository.CarRepository;
 import com.noirix.util.DatabasePropertiesReader;
-import org.apache.commons.lang3.StringUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,13 +15,6 @@ import static com.noirix.util.DatabasePropertiesReader.*;
 public class CarRepositoryImpl implements CarRepository {
 
     public static final DatabasePropertiesReader reader = DatabasePropertiesReader.getInstance();
-
-    public static final String POSTGRES_DRIVER_NAME = "org.postgresql.Driver";
-    public static final String DATABASE_URL = "jdbc:postgresql://localhost:";
-    public static final int DATABASE_PORT = 5432;
-    public static final String DATABASE_NAME = "/webinar_database";
-    public static final String DATABASE_LOGIN = "postgres";
-    public static final String DATABASE_PASSWORD = "postgres";
 
     private static final String ID = "id";
     private static final String MODEL = "model";
@@ -56,16 +48,14 @@ public class CarRepositoryImpl implements CarRepository {
         ResultSet rs;
 
         try {
-            Class.forName(POSTGRES_DRIVER_NAME);
+            Class.forName(reader.getProperty(DATABASE_DRIVER_NAME));
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver Cannot be loaded!");
             throw new RuntimeException("JDBC Driver Cannot be loaded!");
         }
 
-        String jdbcURL = StringUtils.join(DATABASE_URL, DATABASE_PORT, DATABASE_NAME);
-
         try {
-            connection = DriverManager.getConnection(jdbcURL, DATABASE_LOGIN, DATABASE_PASSWORD);
+            connection = DriverManager.getConnection(reader.getProperty(DATABASE_URL), reader.getProperty(DATABASE_LOGIN), reader.getProperty(DATABASE_PASSWORD));
             statement = connection.createStatement();
             rs = statement.executeQuery(findAllQuery);
 
@@ -114,7 +104,7 @@ public class CarRepositoryImpl implements CarRepository {
             if (rs.next()) {
                 return parseResultSet(rs);
             } else {
-                throw new EntityNotFoundException("Car with ID:" + key + "not found");
+                throw new EntityNotFoundException("Car with ID:" + key + " not found");
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -238,6 +228,8 @@ public class CarRepositoryImpl implements CarRepository {
         }
     }
 }
+
+
 
 
 
