@@ -35,11 +35,11 @@ public class CarFrontController extends HttpServlet {
     }
 
     private void doRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/user");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/car");
         if (dispatcher != null) {
             System.out.println("Forward will be done!");
 
-            req.setAttribute("userName", carRepository.findAll().stream().map(Car::getModel).collect(Collectors.joining(",")));
+            req.setAttribute("model", carRepository.findAll().stream().map(Car::getModel).collect(Collectors.joining(",")));
 
             dispatcher.forward(req, resp);
         }
