@@ -56,3 +56,6 @@ on m_auto_dealer.id = m_cars.dealer_id group by name;
 владеющих хотя бы одной машиной,
 стоимость которой превышает среднюю стоимость всех машин.
 */
+
+select count(login) from (select login from m_users join m_cars on m_users.id = m_cars.user_id
+group by login having count(model) >= 1 and max(price) > (select avg(price) from m_cars)) as count;
