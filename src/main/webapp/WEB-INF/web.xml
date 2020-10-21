@@ -16,32 +16,16 @@
 
     <servlet>
         <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.noirix.controller.UserFrontController</servlet-class>
+        <servlet-class>com.noirix.controller.FrontController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/UserFrontController</url-pattern>
+        <url-pattern>/FrontController</url-pattern>
     </servlet-mapping>
-
-    <servlet>
-        <servlet-name>CarServlet</servlet-name>
-        <servlet-class>com.noirix.controller.CarFrontController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CarServlet</servlet-name>
-        <url-pattern>/CarFrontController</url-pattern>
-    </servlet-mapping>
-
-<!--    localhost:8080/application/FrontController-->
 
     <servlet>
         <servlet-name>UserWeb</servlet-name>
-        <jsp-file>/WEB-INF/jsp/user.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>CarWeb</servlet-name>
-        <jsp-file>/WEB-INF/jsp/car.jsp</jsp-file>
+        <jsp-file>/WEB-INF/jsp/hello.jsp</jsp-file>
     </servlet>
 
     <servlet>
@@ -51,15 +35,8 @@
 
     <servlet-mapping>
         <servlet-name>UserWeb</servlet-name>
-        <url-pattern>/user</url-pattern>
+        <url-pattern>/users</url-pattern>
     </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>CarWeb</servlet-name>
-        <url-pattern>/car</url-pattern>
-    </servlet-mapping>
-
-    <!--    localhost:8080/application/hello-->
 
     <servlet-mapping>
         <servlet-name>Error</servlet-name>
@@ -76,7 +53,7 @@
         <filter-class>com.noirix.filter.AuthHeaderFilter</filter-class>
     </filter>
 
-<!--    Ordering in filter mapping defines which filter should be invoked firstly-->
+    <!--    Ordering in filter mapping defines which filter should be invoked firstly-->
     <filter-mapping>
         <filter-name>CharsetFilter</filter-name>
         <url-pattern>/*</url-pattern>

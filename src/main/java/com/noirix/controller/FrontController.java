@@ -2,10 +2,11 @@ package com.noirix.controller;
 
 import com.google.gson.Gson;
 import com.noirix.controller.command.Commands;
-import com.noirix.domain.Car;
-import com.noirix.repository.CarRepository;
-import com.noirix.repository.impl.CarRepositoryImpl;
+import com.noirix.domain.User;
+import com.noirix.repository.UserRepository;
+import com.noirix.repository.impl.UserRepositoryImpl;
 import org.apache.commons.io.IOUtils;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,11 +17,11 @@ import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-public class CarFrontController extends HttpServlet {
+public class FrontController extends HttpServlet {
 
-    public static final CarRepository carRepository = new CarRepositoryImpl();
+    public static final UserRepository userRepository = new UserRepositoryImpl();
 
-    public CarFrontController() {
+    public FrontController() {
         super();
     }
 
@@ -35,11 +36,11 @@ public class CarFrontController extends HttpServlet {
     }
 
     private void doRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/car");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/users");
         if (dispatcher != null) {
             System.out.println("Forward will be done!");
 
-            req.setAttribute("model", carRepository.findAll().stream().map(Car::getModel).collect(Collectors.joining(",")));
+            req.setAttribute("userName", userRepository.findAll().stream().map(User::getName).collect(Collectors.joining(",")));
 
             dispatcher.forward(req, resp);
         }
@@ -49,7 +50,7 @@ public class CarFrontController extends HttpServlet {
 
         Commands commandName = Commands.findByCommandName(req.getParameter("command"));
         try {
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/car");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/users");
             if (dispatcher != null) {
                 resolveGetRequestCommands(req, commandName);
                 dispatcher.forward(req, resp);
@@ -64,27 +65,22 @@ public class CarFrontController extends HttpServlet {
     }
 
     private void resolveGetRequestCommands(HttpServletRequest req, Commands commandName) {
-
-        //http://localhost:8080/CarFrontController?command=findAll&page=0&limit=10 (add offset to query)
-
         switch (commandName) {
-            //http://localhost:8080/CarFrontController?command=findAll
             case FIND_ALL:
                 String page = req.getParameter("page");
                 String limit = req.getParameter("limit");
 
-                req.setAttribute("cars", carRepository.findAll());
+                req.setAttribute("users", userRepository.findAll());
                 break;
-            //     http://localhost:8080/CarFrontController?command=findById&id=10
+
             case FIND_BY_ID:
                 String id = req.getParameter("id");
-                long carId = Long.parseLong(id);
-                req.setAttribute("cars", Collections.singletonList(carRepository.findById(carId)));
-                req.setAttribute("singleCar", carRepository.findById(carId));
+                long userId = Long.parseLong(id);
+                req.setAttribute("users", Collections.singletonList(userRepository.findById(userId)));
+                req.setAttribute("singleUser", userRepository.findById(userId));
                 break;
             default:
                 break;
-
         }
     }
 
@@ -94,20 +90,20 @@ public class CarFrontController extends HttpServlet {
             switch (commandName) {
                 case CREATE:
                     String body = IOUtils.toString(req.getInputStream(), Charset.defaultCharset());
-                    Car car = new Gson().fromJson(body, Car.class);
-                    req.setAttribute("cars", Collections.singletonList(carRepository.save(car)));
+                    User user = new Gson().fromJson(body, User.class);
+                    req.setAttribute("users", Collections.singletonList(userRepository.save(user)));
                     break;
                 case UPDATE:
                     String updateBody = IOUtils.toString(req.getInputStream(), Charset.defaultCharset());
-                    Car updateCar = new Gson().fromJson(updateBody, Car.class);
-                    req.setAttribute("cars", Collections.singletonList(carRepository.update(updateCar)));
+                    User updateUser = new Gson().fromJson(updateBody, User.class);
+                    req.setAttribute("users", Collections.singletonList(userRepository.update(updateUser)));
                     break;
                 case DELETE:
                     String id = req.getParameter("id");
-                    long carId = Long.parseLong(id);
-                    carRepository.delete(carRepository.findById(carId));
+                    long userId = Long.parseLong(id);
+                    userRepository.delete(userRepository.findById(userId));
 
-                    req.setAttribute("cars", carRepository.findAll());
+                    req.setAttribute("users", userRepository.findAll());
                     break;
                 default:
                     break;

@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +28,19 @@ public class UserRepositoryImpl implements UserRepository {
     public static final DatabasePropertiesReader reader = DatabasePropertiesReader.getInstance();
 
     private static final String ID = "id";
+
     private static final String NAME = "name";
+
     private static final String SURNAME = "surname";
+
     private static final String BIRTH_DATE = "birth_date";
+
     private static final String GENDER = "gender";
+
     private static final String CREATED = "created";
+
     private static final String CHANGED = "changed";
+
     private static final String WEIGHT = "weight";
 
     private User parseResultSet(ResultSet rs) throws SQLException {
@@ -146,7 +154,7 @@ public class UserRepositoryImpl implements UserRepository {
             statement.setLong(1, user.getId());
 
             int deletedRows = statement.executeUpdate();
-            return (long)deletedRows;
+            return (long) deletedRows;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             throw new RuntimeException("SQL Issues!");
@@ -215,7 +223,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             connection = DriverManager.getConnection(reader.getProperty(DATABASE_URL), reader.getProperty(DATABASE_LOGIN), reader.getProperty(DATABASE_PASSWORD));
             statement = connection.prepareStatement(findByIdQuery);
-            PreparedStatement lastInsertId = connection.prepareStatement("SELECT currval('m_users_id_seq') as last_insert_id;");
+            PreparedStatement lastInsertId = connection.prepareStatement("select currval('m_users_id_seq') as last_insert_id;");
 
             statement.setString(1, user.getName());
             statement.setString(2, user.getSurname());

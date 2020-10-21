@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    /*Here we will store PK of m_users table*/
+
     private Long id;
 
     private String name;

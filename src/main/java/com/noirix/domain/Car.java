@@ -1,6 +1,11 @@
 package com.noirix.domain;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -12,10 +17,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class Car {
 
     private Long id;
+
     private String model;
+
     private int year;
+
     private String color;
+
     private int price;
+
+    private Long userId;
 
     @Override
     public String toString() {

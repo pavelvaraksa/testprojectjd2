@@ -5,7 +5,13 @@ import com.noirix.exception.EntityNotFoundException;
 import com.noirix.repository.CarRepository;
 import com.noirix.util.DatabasePropertiesReader;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +23,16 @@ public class CarRepositoryImpl implements CarRepository {
     public static final DatabasePropertiesReader reader = DatabasePropertiesReader.getInstance();
 
     private static final String ID = "id";
+
     private static final String MODEL = "model";
+
     private static final String YEAR = "year";
+
     private static final String COLOR = "color";
+
     private static final String PRICE = "price";
+
+    private static final String USER_ID = "user_id";
 
     private Car parseResultSet(ResultSet rs) throws SQLException {
         Car car = new Car();
@@ -29,6 +41,7 @@ public class CarRepositoryImpl implements CarRepository {
         car.setYear(rs.getInt(YEAR));
         car.setColor(rs.getString(COLOR));
         car.setPrice(rs.getInt(PRICE));
+        car.setUserId(rs.getLong(USER_ID));
         return car;
     }
 
@@ -39,7 +52,7 @@ public class CarRepositoryImpl implements CarRepository {
 
     @Override
     public List<Car> findAll() {
-        final String findAllQuery = "select * from m_cars order by price DESC";
+        final String findAllQuery = "select * from m_cars order by price desc";
 
         List<Car> result = new ArrayList<>();
 
@@ -66,6 +79,7 @@ public class CarRepositoryImpl implements CarRepository {
                 car.setYear(rs.getInt(YEAR));
                 car.setColor(rs.getString(COLOR));
                 car.setPrice(rs.getInt(PRICE));
+                car.setUserId(rs.getLong(USER_ID));
 
                 result.add(car);
             }
@@ -154,6 +168,7 @@ public class CarRepositoryImpl implements CarRepository {
                 "year = ?,  " +
                 "color = ?,  " +
                 "price = ?,  " +
+                "user_id = ?, " +
                 "where id = ?";
 
         Connection connection;
@@ -173,8 +188,9 @@ public class CarRepositoryImpl implements CarRepository {
             statement = connection.prepareStatement(findByIdQuery);
             statement.setString(1, car.getModel());
             statement.setInt(2, car.getYear());
-            statement.setString(3,car.getColor());
+            statement.setString(3, car.getColor());
             statement.setInt(4, car.getPrice());
+            statement.setLong(5, car.getUserId());
 
             statement.executeUpdate();
             return findById(car.getId());
@@ -186,8 +202,8 @@ public class CarRepositoryImpl implements CarRepository {
 
     @Override
     public Car save(Car car) {
-        final String findByIdQuery = "insert into m_cars (model,year,color,price) " +
-                "values (?,?,?,?)";
+        final String findByIdQuery = "insert into m_cars (model,year,color,price,user_id) " +
+                "values (?,?,?,?,?)";
 
         Connection connection;
         PreparedStatement statement;
@@ -201,15 +217,16 @@ public class CarRepositoryImpl implements CarRepository {
 
         try {
             connection = DriverManager.getConnection(reader.getProperty(DATABASE_URL),
-                                                     reader.getProperty(DATABASE_LOGIN),
-                                                     reader.getProperty(DATABASE_PASSWORD));
+                    reader.getProperty(DATABASE_LOGIN),
+                    reader.getProperty(DATABASE_PASSWORD));
             statement = connection.prepareStatement(findByIdQuery);
-            PreparedStatement lastInsertId = connection.prepareStatement("SELECT currval('m_cars_id_seq') as last_insert_id;");
+            PreparedStatement lastInsertId = connection.prepareStatement("select currval('m_cars_id_seq') as last_insert_id;");
 
             statement.setString(1, car.getModel());
             statement.setInt(2, car.getYear());
             statement.setString(3, car.getColor());
             statement.setInt(4, car.getPrice());
+            statement.setLong(5, car.getUserId());
 
             statement.executeUpdate();
 
