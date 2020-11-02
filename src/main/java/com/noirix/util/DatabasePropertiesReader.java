@@ -24,5 +24,3 @@ public class DatabasePropertiesReader {
         return (String) resourceBundle.getObject(key);
     }
 }
-
-
