@@ -236,4 +236,31 @@ public class UserRepositoryImpl implements UserRepository {
             throw new RuntimeException("SQL Issues!");
         }
     }
+
+    @Override
+    public int deleteById(Long id) {
+        final String findByIdQuery = "delete from m_users where id = ?";
+
+        Connection connection;
+        PreparedStatement statement;
+
+        try {
+            Class.forName(reader.getProperty(DATABASE_DRIVER_NAME));
+        } catch (ClassNotFoundException e) {
+            log.error("JDBC Driver Cannot be loaded!");
+            throw new RuntimeException("JDBC Driver Cannot be loaded!");
+        }
+
+        try {
+            connection = DriverManager.getConnection(reader.getProperty(DATABASE_URL), reader.getProperty(DATABASE_LOGIN), reader.getProperty(DATABASE_PASSWORD));
+            statement = connection.prepareStatement(findByIdQuery);
+            statement.setLong(1,id);
+
+            int deletedRows = statement.executeUpdate();
+            return deletedRows;
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException("SQL Issues!");
+        }
+    }
 }

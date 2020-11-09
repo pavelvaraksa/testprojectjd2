@@ -15,6 +15,8 @@ public interface UserService {
 
     Long delete(User user);
 
+    int deleteById(Long id);
+
     User findById(Long userId);
 
     List<User> search(String query);

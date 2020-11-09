@@ -1,4 +1,4 @@
-package com.noirix.controller.command;
+package com.noirix.controller.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

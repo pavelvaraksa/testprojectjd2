@@ -15,6 +15,8 @@ public interface CarService {
 
     Long delete(Car car);
 
+    int deleteById(Long id);
+
     Car findById(Long carId);
 
     List<Car> search(String query);

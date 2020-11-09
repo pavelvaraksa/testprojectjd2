@@ -122,6 +122,15 @@ public class UserRepositoryJdbcTemplateImpl implements UserRepository {
     public Long delete(User entity) {
         final String deleteQuery = "delete from m_users where id = ?";
 
-        return (long) jdbcTemplate.update(deleteQuery);
+        return (long) jdbcTemplate.update(deleteQuery, entity.getId());
+
+    }
+
+    @Override
+    public int deleteById(Long id) {
+        final String deleteQuery = "delete from m_users where id = ?";
+
+        return jdbcTemplate.update(deleteQuery, id);
+
     }
 }

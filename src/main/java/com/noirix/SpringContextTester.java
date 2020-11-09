@@ -23,8 +23,6 @@ public class SpringContextTester {
 
         log.info(userService.findById(1L).toString());
 
-        log.info(userService.search("Evgeny").toString());
-
         List<User> testCreate = userService.search("Alex");
 
         for (User user : testCreate) {
