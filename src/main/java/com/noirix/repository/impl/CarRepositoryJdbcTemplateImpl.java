@@ -51,6 +51,11 @@ public class CarRepositoryJdbcTemplateImpl implements CarRepository {
     }
 
     @Override
+    public int deleteById(Long id) {
+        return 0;
+    }
+
+    @Override
     public List<Car> findAll() {
         return jdbcTemplate.query("select * from m_cars", this::getCarRowMapper);
     }

@@ -50,6 +50,11 @@ public class CarRepositoryImpl implements CarRepository {
     }
 
     @Override
+    public int deleteById(Long id) {
+        return 0;
+    }
+
+    @Override
     public Car save(Car car) {
         final String findByIdQuery = "insert into m_cars (model,year,color,price,user_id) " +
                 "values (?,?,?,?,?)";
